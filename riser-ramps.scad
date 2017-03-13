@@ -10,21 +10,21 @@ translate([28, 0, 0]) {
 
     // 200
     translate([0, 0, 28 * 3]) {
-      decking(length=250);
+      mitred_decking(length=250);
     }
 
     // 400
     translate([0, 0, 28 * 2]) {
-      decking(length=450);
+      mitred_decking(length=450);
     }
 
     // 600
     translate([0, 0, 28]) {
-      decking(length=650);
+      mitred_decking(length=650);
     }
 
     // 800
-    decking(length=800);
+    mitred_decking(length=800);
   }
 }
 
@@ -57,6 +57,41 @@ module decking(length) {
           cylinder(r=1.25, h=length+2);
         }
       }
+    }
+  }
+}
+
+// Intersection for us to appear to mitre the end of a plank
+// basically an extruded triangle with extra padding to intersect nicely
+module angle_prism(depth, width) {
+  union() {
+    translate([depth, 0, 0]) {
+      rotate([0, 90, 90]) {
+        linear_extrude(height=width, convexity=10) {
+          polygon(points=[[0,0],[depth,0],[0,depth]], paths=[[0,1,2]]);
+        }
+      }
+    }
+
+    translate([depth-0.1, 0, -depth]) {
+      cube(size=[2, width, depth+1]);
+    }
+
+    rotate([0, 90, 0]) {
+      translate([-1, 0, 0]) {
+        cube(size=[2, width, depth+1]);
+      }
+    }
+  }
+}
+
+// Mitre the end of a plank
+module mitred_decking(length) {
+  difference() {
+    decking(length=length);
+
+    translate([length-28, 0, 28]) {
+      angle_prism(28, 120+2);
     }
   }
 }
