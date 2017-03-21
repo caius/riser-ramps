@@ -1,30 +1,27 @@
 // Riser ramp, from top to bottom literally
 translate([28, 0, 0]) {
   union() {
-    // endplate
+    // Upright endplate
     translate([0, 0, 0]) {
       rotate([0, 270, 0]) {
         decking(length=140);
       }
     }
 
-    // 200
+    // Planks making up ramp
     translate([0, 0, 28 * 3]) {
       mitred_decking(length=250);
     }
 
-    // 400
     translate([0, 0, 28 * 2]) {
       mitred_decking(length=450);
     }
 
-    // 600
     translate([0, 0, 28]) {
       mitred_decking(length=650);
     }
 
-    // 800
-    mitred_decking(length=800);
+    mitred_decking(length=850);
   }
 }
 
